@@ -12,10 +12,10 @@ function callback_Q1(data) {
 
 if(sources != null){
     $("#titre").html('Liste des versions pour l\'article ' + titre);
-    html_list_versions += '<table border=1><tr><th>Version</th><th>Date</th><th>Contributeur</th><th>Ampleur de la modification</th></tr>';
+    html_list_versions += '<table border=1><tr><th>Version</th><th>Date</th><th>Contributeur</th><th>Nombre de caract&egrave;res modifi&eacute;s</th><th>Ampleur de la modification</th></tr>';
     for (var i = 0; i < sources.length; i++) {
-        html_list_versions += '<tr><td>' + (i + 1) + '</td><td>' + data.query.pages[idPage].revisions[i].timestamp +
-                '</td><td>' + data.query.pages[idPage].revisions[i].user + '</td><td>' + Math.abs(sources[i].sizediff) + '</td></tr>';
+        html_list_versions += '<tr><td align = "center">' + (i + 1) + '</td><td>' + data.query.pages[idPage].revisions[i].timestamp +
+                '</td><td>' + data.query.pages[idPage].revisions[i].user + '</td><td align = "center">' + data.query.pages[idPage].revisions[i].size + '</td><td align="center">' + getAmpleur(data.query.pages[idPage].revisions[i].size) + '</td></tr>';
 
     }
     html_list_versions += '</table>';
@@ -24,6 +24,18 @@ if(sources != null){
 }else{
     $("#titre").html("L'article \""+ titre+"\" n\'existe pas!");
 }
+}
+
+function getAmpleur(size){
+
+	if(size<101){
+		return "Petite"
+	}else if(size<501){
+		return "Moyenne";
+	}else{
+		return "Grande";
+	}
+
 }
 function doGet(url, query) {
     $.ajax({
@@ -66,9 +78,8 @@ function getJsonWiki() {
     wikiUrlApiPath = Grisou.WikiHelper.getApiUrlPath();
 
     wikiUrlRequest = wikiUrlApiPath + "?action=query&list=users&format=json&titles=" + titreArticle +
-            "&prop=revisions&rvlimit=500";
+          "&prop=revisions&rvprop=size|timestamp|user&rvlimit=500";
     
-
     doGet(wikiUrlRequest, "Q1");
 
 }
