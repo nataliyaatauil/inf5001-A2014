@@ -9,13 +9,28 @@ function callback_Q1(data) {
     }
     var sources = data.query.pages[idPage].revisions;
     var titre = data.query.pages[idPage].title;
+    var sizeArticle = 0;
+    var sizeArticleSuivant = 0;
 
 if(sources != null){
     $("#titre").html('Liste des versions pour l\'article ' + titre);
     html_list_versions += '<table border=1><tr><th>Version</th><th>Date</th><th>Contributeur</th><th>Nombre de caract&egrave;res modifi&eacute;s</th><th>Ampleur de la modification</th></tr>';
     for (var i = 0; i < sources.length; i++) {
+        sizeArticle = data.query.pages[idPage].revisions[i].size;
+        
+        
+        if (i == (sources.length - 1)){
+            sizeArticleSuivant = 0;
+        }else{
+            sizeArticleSuivant =data.query.pages[idPage].revisions[i+1].size;  
+        }
+        
+        sizeDiff = sizeArticleSuivant - sizeArticle;
+        if(sizeDiff < 0){
+            sizeDiff = -1 * sizeDiff
+        }
         html_list_versions += '<tr><td align = "center">' + (i + 1) + '</td><td>' + data.query.pages[idPage].revisions[i].timestamp +
-                '</td><td>' + data.query.pages[idPage].revisions[i].user + '</td><td align = "center">' + data.query.pages[idPage].revisions[i].size + '</td><td align="center">' + getAmpleur(data.query.pages[idPage].revisions[i].size) + '</td></tr>';
+                '</td><td>' + data.query.pages[idPage].revisions[i].user + '</td><td align = "center">' + sizeDiff + '</td><td align="center">' + getAmpleur(data.query.pages[idPage].revisions[i].size) + '</td></tr>';
 
     }
     html_list_versions += '</table>';
@@ -28,9 +43,9 @@ if(sources != null){
 
 function getAmpleur(size){
 
-	if(size<101){
+	if(sizeDiff<101){
 		return "Petite"
-	}else if(size<501){
+	}else if(sizeDiff<501){
 		return "Moyenne";
 	}else{
 		return "Grande";
