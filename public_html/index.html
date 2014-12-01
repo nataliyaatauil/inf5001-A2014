@@ -5,35 +5,35 @@
         <title>Grisou | Wiki contributions Project version Automne 2014</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/style.css" />
-
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     </head>
     <body>
-        <div id="headeraccueil"></div>
-
-        <div id="page">
-            <div><img id="logoAccueil" src="images/logoGrisou.png" alt="Logo Grisou" title="" /></div>
-            <div id="wraper">
-                <div id="button_panel"></div>
-                <ul id="menu">
-                    <li>
-                        <a href="http://www.grisou.ca/contributionsWiki/"><img src="images/boutG.png" alt="Recherche par le nom de l'utilisateur de wiki" title="" /></a>
-
-                    </li>
-                    <li>
-                        <a href=""><img src="images/boutM.png" alt="Toutes mes contributions" title="" /></a>
-
-                    </li>
-                    <li>
-                        <a href="articles.html"><img src="images/boutD.png" alt="Recherche par le nom de l'utilisateur de wiki" title="" /></a>
-
-                    </li>
-                </ul>
-
+        <div id="header">
+            <h1>GRISOU</h1>
+        </div>
+        <div id="search_panel">
+            <div id="search_div">
+                <input class="input" type="text" id="titreArticle" value="" placeholder="Entrez le nom de l'article" title="Entrez le nom de l'article."/>
+                <input class="input" type="text" id="url" value="en.wikipedia.org" placeholder="Wikipedia web site" title="Enter the url for the wikipedia web site the contributor has contributed to (without the http://), Example: en.wikipedia.org"/>
+                <button id="btn_send" onclick="getJsonWiki();">Send</button>
             </div>
         </div>
 
-        <div id="footer">         
+        <div id="result">
+            <div id="titre"></div>
+
+            <div id="list_versions">
+                <div id="tableau" style="width: 50%; margin: 0 auto;"></div>
+            </div>
         </div>
+
+
+        <script src="script/jquery-1.8.2.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script src="script/diff_match_patch.js"></script>
+        <script src="script/contributions-diff.js"></script>
+        <script src="script/contributionA2014.js"></script>
+        <script src="script/WikiHelper.js"></script>
 
     </body>
 </html>

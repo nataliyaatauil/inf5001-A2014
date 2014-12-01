@@ -13,12 +13,26 @@ function callback_Q1(data) {
     var sizeArticleSuivant = 0;
 
 if(sources != null){
+    var numParticipation = [];  
+    var auteurs = [];           
+
+    for (var idpage in data.query.pages) {			
+        for(var i=0; i< data.query.pages[idpage].revisions.length;i++){
+            indexAuteur =  auteurs.indexOf(data.query.pages[idpage].revisions[i].user);   
+
+            if(indexAuteur==-1){                                                          
+                numParticipation[auteurs.length] = 1;
+                auteurs[auteurs.length]= data.query.pages[idpage].revisions[i].user;
+            }else{
+                    numParticipation[indexAuteur] = numParticipation[indexAuteur] + 1;
+            }
+        }
+    }    
     $("#titre").html('Liste des versions pour l\'article ' + titre);
-    html_list_versions += '<table border=1><tr><th>Version</th><th>Date</th><th>Contributeur</th><th>Nombre de caract&egrave;res modifi&eacute;s</th><th>Ampleur de la modification</th></tr>';
+    html_list_versions += '<table border=1><tr><th>Version</th><th>Date</th><th>Contributeur</th><th>Nombre de caract&egrave;res modifi&eacute;s</th><th>Ampleur de la modification</th><th>Nombre Participation auteur</th></tr>';
     for (var i = 0; i < sources.length; i++) {
         sizeArticle = data.query.pages[idPage].revisions[i].size;
-        
-        
+                
         if (i == (sources.length - 1)){
             sizeArticleSuivant = 0;
         }else{
@@ -30,8 +44,9 @@ if(sources != null){
             sizeDiff = -1 * sizeDiff
         }
         html_list_versions += '<tr><td align = "center">' + (i + 1) + '</td><td>' + data.query.pages[idPage].revisions[i].timestamp +
-                '</td><td>' + data.query.pages[idPage].revisions[i].user + '</td><td align = "center">' + sizeDiff + '</td><td align="center">' + getAmpleur(data.query.pages[idPage].revisions[i].size) + '</td></tr>';
-
+                '</td><td>' + data.query.pages[idPage].revisions[i].user + '</td><td align = "center">' + sizeDiff + '</td><td align="center">' +
+                getAmpleur(data.query.pages[idPage].revisions[i].size) + '</td><td align="center">' + numParticipation[auteurs.indexOf(data.query.pages[idpage].revisions[i].user)]+
+                '</td></tr>';
     }
     html_list_versions += '</table>';
     $("#tableau").html(html_list_versions);
@@ -43,13 +58,13 @@ if(sources != null){
 
 function getAmpleur(size){
 
-	if(sizeDiff<101){
-		return "Petite"
-	}else if(sizeDiff<501){
-		return "Moyenne";
-	}else{
-		return "Grande";
-	}
+    if(sizeDiff<101){
+        return "Petite"
+    }else if(sizeDiff<501){
+        return "Moyenne";
+    }else{
+        return "Grande";
+}
 
 }
 function doGet(url, query) {
